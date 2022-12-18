@@ -11,8 +11,8 @@ export const globalStyles = globalCss({
   'html, body': {
     minWidth: '100%',
     minHeight: '100%',
-    backgroundColor: '$gray900',
-    color: '$gray100',
+    backgroundColor: '$Gray-900',
+    color: '$Gray-100',
     '-webkit-font-smoothing': 'antialised',
   },
 

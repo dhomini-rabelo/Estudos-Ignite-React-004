@@ -1,5 +1,5 @@
 import { Html, Head, Main, NextScript } from 'next/document'
-import { getCssText } from '../core/styles'
+import { getCssText } from '../layout/styles'
 
 
 export default function Document() {
