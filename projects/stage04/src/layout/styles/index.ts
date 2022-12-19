@@ -14,6 +14,12 @@ export const {
 
       'Green-500': '#00875f',
       'Green-300': '#00b37e'
+    },
+    fontSizes: {
+      cmd: '1.125rem',
+      clg: '1.125rem',
+      cxl: '1.5rem',
+      'c2xl': '2rem',
     }
   }
 })
