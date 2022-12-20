@@ -5,6 +5,7 @@ import { GetStaticProps } from "next";
 import { stripe } from "../code/services";
 import Stripe from "stripe";
 import { priceFormatter } from "../code/utils/formatter";
+import Link from "next/link";
 
 
 interface Props {
@@ -28,13 +29,15 @@ export default function Home({ products }: Props) {
   return (
     <Div.container className="flex text-white w-full ml-auto keen-slider" ref={sliderRef}>
       {products.map(product => (
-        <A.product key={product.id} href="/" className="rounded-lg p-1 flex items-center justify-center keen-slider__slide">
-          <img src={product.imageUrl} alt="t-shirt-01" />
-          <footer className="flex items-center justify-between">
-            <strong className="text-clg">{product.name}</strong>
-            <span className="text-cxl font-bold text-Green-300">{product.price}</span>
-          </footer>
-        </A.product>
+        <Link key={product.id} href={`/produtos/${product.id}`} legacyBehavior>
+          <A.product className="cursor-pointer rounded-lg p-1 flex items-center justify-center keen-slider__slide">
+            <img src={product.imageUrl} alt="t-shirt-01" />
+            <footer className="flex items-center justify-between">
+              <strong className="text-clg">{product.name}</strong>
+              <span className="text-cxl font-bold text-Green-300">{product.price}</span>
+            </footer>
+          </A.product>
+        </Link>
       ))}
     </Div.container>
   )
