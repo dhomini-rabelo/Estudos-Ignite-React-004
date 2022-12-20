@@ -1,8 +1,22 @@
 import { A, Div } from "../layout/styles/pages/home";
 import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css'
+import { GetStaticProps } from "next";
+import { stripe } from "../code/services";
+import Stripe from "stripe";
 
-export default function Home() {
+
+interface Props {
+  products: {
+    id: string,
+    name: string,
+    imageUrl: string,
+    price: number,
+  }[]
+}
+
+
+export default function Home({ products }: Props) {
   const [sliderRef] = useKeenSlider({
     slides: {
       perView: 3,
@@ -12,41 +26,39 @@ export default function Home() {
 
   return (
     <Div.container className="flex text-white w-full ml-auto keen-slider" ref={sliderRef}>
-      <A.product href="/" className="rounded-lg p-1 flex items-center justify-center keen-slider__slide">
-        <img src="/camisas/camisa01.png" alt="t-shirt-01" />
-        <footer className="flex items-center justify-between">
-          <strong className="text-clg">Camisa 00</strong>
-          <span className="text-cxl font-bold text-Green-300">R$ 80,00</span>
-        </footer>
-      </A.product>
-      <A.product href="/" className="rounded-lg p-1 flex items-center justify-center keen-slider__slide">
-        <img src="/camisas/camisa02.png" alt="t-shirt-01" />
-        <footer className="flex items-center justify-between">
-          <strong className="text-clg">Camisa 00</strong>
-          <span className="text-cxl font-bold text-Green-300">R$ 80,00</span>
-        </footer>
-      </A.product>
-      <A.product href="/" className="rounded-lg p-1 flex items-center justify-center keen-slider__slide">
-        <img src="/camisas/camisa03.png" alt="t-shirt-01" />
-        <footer className="flex items-center justify-between">
-          <strong className="text-clg">Camisa 00</strong>
-          <span className="text-cxl font-bold text-Green-300">R$ 80,00</span>
-        </footer>
-      </A.product>
-      <A.product href="/" className="rounded-lg p-1 flex items-center justify-center keen-slider__slide">
-        <img src="/camisas/camisa03.png" alt="t-shirt-01" />
-        <footer className="flex items-center justify-between">
-          <strong className="text-clg">Camisa 00</strong>
-          <span className="text-cxl font-bold text-Green-300">R$ 80,00</span>
-        </footer>
-      </A.product>
-      <A.product href="/" className="rounded-lg p-1 flex items-center justify-center keen-slider__slide">
-        <img src="/camisas/camisa03.png" alt="t-shirt-01" />
-        <footer className="flex items-center justify-between">
-          <strong className="text-clg">Camisa 00</strong>
-          <span className="text-cxl font-bold text-Green-300">R$ 80,00</span>
-        </footer>
-      </A.product>
+      {products.map(product => (
+        <A.product key={product.id} href="/" className="rounded-lg p-1 flex items-center justify-center keen-slider__slide">
+          <img src={product.imageUrl} alt="t-shirt-01" />
+          <footer className="flex items-center justify-between">
+            <strong className="text-clg">{product.name}</strong>
+            <span className="text-cxl font-bold text-Green-300">R$ {product.price}</span>
+          </footer>
+        </A.product>
+      ))}
     </Div.container>
   )
+}
+
+
+export const getStaticProps: GetStaticProps = async () => {
+  const request = await stripe.products.list({
+    expand: ['data.default_price'],
+  })
+  const products = request.data.map(product => {
+    const priceSettings = product.default_price as Stripe.Price
+    return {
+      id: product.id,
+      name: product.name,
+      imageUrl: product.images[0],
+      price: priceSettings.unit_amount,
+    }
+
+  })
+  console.log(products)
+  return {
+    props: {
+      products
+    },
+    revalidate: 60 * 60 * 2, // 2 hours
+  }
 }
