@@ -4,6 +4,7 @@ import 'keen-slider/keen-slider.min.css'
 import { GetStaticProps } from "next";
 import { stripe } from "../code/services";
 import Stripe from "stripe";
+import { priceFormatter } from "../code/utils/formatter";
 
 
 interface Props {
@@ -31,7 +32,7 @@ export default function Home({ products }: Props) {
           <img src={product.imageUrl} alt="t-shirt-01" />
           <footer className="flex items-center justify-between">
             <strong className="text-clg">{product.name}</strong>
-            <span className="text-cxl font-bold text-Green-300">R$ {product.price}</span>
+            <span className="text-cxl font-bold text-Green-300">{product.price}</span>
           </footer>
         </A.product>
       ))}
@@ -50,7 +51,7 @@ export const getStaticProps: GetStaticProps = async () => {
       id: product.id,
       name: product.name,
       imageUrl: product.images[0],
-      price: priceSettings.unit_amount,
+      price: priceFormatter.format(priceSettings.unit_amount! / 100),
     }
 
   })
