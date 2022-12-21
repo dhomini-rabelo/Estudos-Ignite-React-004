@@ -31,7 +31,7 @@ export default function Home({ products }: Props) {
       {products.map(product => (
         <Link key={product.id} href={`/produtos/${product.id}`} legacyBehavior>
           <A.product className="cursor-pointer rounded-lg p-1 flex items-center justify-center keen-slider__slide">
-            <img src={product.imageUrl} alt="t-shirt-01" />
+            <img src={product.imageUrl} alt="t-shirt" />
             <footer className="flex items-center justify-between">
               <strong className="text-clg">{product.name}</strong>
               <span className="text-cxl font-bold text-Green-300">{product.price}</span>
@@ -48,6 +48,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const request = await stripe.products.list({
     expand: ['data.default_price'],
   })
+
   const products = request.data.map(product => {
     const priceSettings = product.default_price as Stripe.Price
     return {
@@ -56,9 +57,8 @@ export const getStaticProps: GetStaticProps = async () => {
       imageUrl: product.images[0],
       price: priceFormatter.format(priceSettings.unit_amount! / 100),
     }
-
   })
-  console.log(products)
+
   return {
     props: {
       products
