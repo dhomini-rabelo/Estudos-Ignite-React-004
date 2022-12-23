@@ -1,5 +1,7 @@
+import axios from "axios"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { useRouter } from "next/router"
+import { useState } from "react"
 import Stripe from "stripe"
 import { stripe } from "../../code/services"
 import { priceFormatter } from "../../code/utils/formatter"
@@ -19,14 +21,25 @@ interface Props {
 
 
 export default function Product({ product }: Props) {
+  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false)
   const { isFallback } = useRouter()
 
   if (isFallback) {
     return <div>Carregando...</div>
   }
 
-  function handleBuy() {
-    console.log(product.priceId)
+  async function handleBuy() {
+    try {
+      setIsCreatingCheckoutSession(true)
+      const response = await axios.post('/api/checkout', {
+        productId: product.id,
+        priceId: product.priceId,
+      })
+      window.location.href = response.data.checkoutUrl
+    } catch {
+      setIsCreatingCheckoutSession(false)
+      alert('Falha ao redirecionar para o checkout!')
+    }
   }
 
   return (
@@ -38,7 +51,9 @@ export default function Product({ product }: Props) {
         <h1 className="text-c2xl text-Gray-300">{product.name}</h1>
         <span className="mt-4 block text-c2xl text-Gray-300">{product.price}</span>
         <p className="mt-10 text-cmd lh-160 text-Gray-300">{product.description}</p>
-        <button onClick={handleBuy} className="mt-auto bg-Green-500 border-0 text-White rounded-lg p-5 cursor-pointer font-bold text-cmd hover:bg-Green-300">
+        <button onClick={handleBuy} disabled={isCreatingCheckoutSession}
+          className="mt-auto bg-Green-500 border-0 text-White rounded-lg p-5 cursor-pointer font-bold text-cmd hover:bg-Green-300 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-Green-500"
+        >
           Comprar agora
         </button>
       </div>

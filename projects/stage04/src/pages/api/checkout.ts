@@ -3,7 +3,22 @@ import { stripe } from "../../code/services";
 import { PROJECT_URL } from "../../code/settings";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const priceId = 'price_1MGu4dBjumnS0oY395WcAoGH'
+  const { priceId, productId } = req.body
+  if (req.method !== 'POST') {
+    return res.status(405)
+  } else if (!priceId) {
+    return res.status(400).json({
+      errors: {
+        priceId: 'This field is required'
+      }
+    })
+  } else if (!productId) {
+    return res.status(400).json({
+      errors: {
+        productId: 'This field is required'
+      }
+    })
+  }
   const checkoutSession = await stripe.checkout.sessions.create({
     mode: 'payment',
     line_items: [
@@ -13,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     ],
     success_url: `${PROJECT_URL}/sucesso`,
-    cancel_url: `${PROJECT_URL}/cancelamento`,
+    cancel_url: `${PROJECT_URL}/produtos/${productId}`,
   })
   return res.status(201).json({
     checkoutUrl: checkoutSession.url,
