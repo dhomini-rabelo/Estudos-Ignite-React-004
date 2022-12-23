@@ -12,6 +12,7 @@ interface Props {
     imageUrl: string,
     price: string,
     description: string,
+    priceId: string,
   }
 }
 
@@ -23,6 +24,11 @@ export default function Product({ product }: Props) {
   if (isFallback) {
     return <div>Carregando...</div>
   }
+
+  function handleBuy() {
+    console.log(product.priceId)
+  }
+
   return (
     <main className="grid grid-cols-2 items-stretch gap-16 max-w-[1180px] mx-auto">
       <Div.imageContainer className="col-span-1 w-full max-w-[576px] rounded-lg p-1 flex items-center justify-center">
@@ -32,7 +38,7 @@ export default function Product({ product }: Props) {
         <h1 className="text-c2xl text-Gray-300">{product.name}</h1>
         <span className="mt-4 block text-c2xl text-Gray-300">{product.price}</span>
         <p className="mt-10 text-cmd lh-160 text-Gray-300">{product.description}</p>
-        <button className="mt-auto bg-Green-500 border-0 text-White rounded-lg p-5 cursor-pointer font-bold text-cmd hover:bg-Green-300">
+        <button onClick={handleBuy} className="mt-auto bg-Green-500 border-0 text-White rounded-lg p-5 cursor-pointer font-bold text-cmd hover:bg-Green-300">
           Comprar agora
         </button>
       </div>
@@ -61,6 +67,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         imageUrl: product.images[0],
         price: priceFormatter.format(priceSettings.unit_amount! / 100),
         description: product.description,
+        priceId: priceSettings.id,
       }
     },
     revalidate: 60 * 60 * 1, // 2 hours
