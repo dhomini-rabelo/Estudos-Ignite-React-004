@@ -1,4 +1,4 @@
-import { GetStaticProps } from "next"
+import { GetStaticPaths, GetStaticProps } from "next"
 import { useRouter } from "next/router"
 import Stripe from "stripe"
 import { stripe } from "../../code/services"
@@ -18,7 +18,11 @@ interface Props {
 
 
 export default function Product({ product }: Props) {
-  const { query } = useRouter()
+  const { isFallback } = useRouter()
+
+  if (isFallback) {
+    return <div>Carregando...</div>
+  }
   return (
     <main className="grid grid-cols-2 items-stretch gap-16 max-w-[1180px] mx-auto">
       <Div.imageContainer className="col-span-1 w-full max-w-[576px] rounded-lg p-1 flex items-center justify-center">
@@ -36,10 +40,15 @@ export default function Product({ product }: Props) {
   )
 }
 
+export const getStaticPaths: GetStaticPaths = () => ({
+  paths: [],
+  fallback: true,
+})
+
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const productId = params!.id as string
   const product = await stripe.products.retrieve(productId, {
-    expand: ['data.default_price'],
+    expand: ['default_price'],
   })
 
   const priceSettings = product.default_price as Stripe.Price

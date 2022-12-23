@@ -29,7 +29,7 @@ export default function Home({ products }: Props) {
   return (
     <Div.container className="flex text-white w-full ml-auto keen-slider" ref={sliderRef}>
       {products.map(product => (
-        <Link key={product.id} href={`/produtos/${product.id}`} legacyBehavior>
+        <Link key={product.id} href={`/produtos/${product.id}`} prefetch={false} legacyBehavior>
           <A.product className="cursor-pointer rounded-lg p-1 flex items-center justify-center keen-slider__slide">
             <img src={product.imageUrl} alt="t-shirt" />
             <footer className="flex items-center justify-between">
