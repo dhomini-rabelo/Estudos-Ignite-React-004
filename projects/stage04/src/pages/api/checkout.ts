@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         quantity: 1,
       }
     ],
-    success_url: `${PROJECT_URL}/sucesso`,
+    success_url: `${PROJECT_URL}/sucesso?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${PROJECT_URL}/produtos/${productId}`,
   })
   return res.status(201).json({
