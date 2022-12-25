@@ -53,8 +53,8 @@ export default function Product({ product }: Props) {
           <img src={product.imageUrl} alt="product-image" />
         </Div.imageContainer>
         <div className="col-span-1 flex flex-col">
-          <h1 className="text-c2xl text-Gray-300">{product.name}</h1>
-          <span className="mt-4 block text-c2xl text-Gray-300">{product.price}</span>
+          <h1 className="text-c2xl text-Gray-300 font-bold">{product.name}</h1>
+          <span className="mt-4 block text-c2xl text-Green-300">{product.price}</span>
           <p className="mt-10 text-cmd lh-160 text-Gray-300">{product.description}</p>
           <button onClick={handleBuy} disabled={isCreatingCheckoutSession}
             className="mt-auto bg-Green-500 border-0 text-White rounded-lg p-5 cursor-pointer font-bold text-cmd hover:bg-Green-300 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-Green-500"
