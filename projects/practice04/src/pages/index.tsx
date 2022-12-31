@@ -6,6 +6,7 @@ import { stripe } from "../code/services";
 import Stripe from "stripe";
 import { priceFormatter } from "../code/utils/formatter";
 import Link from "next/link";
+import { Handbag } from "phosphor-react";
 
 
 interface Props {
@@ -33,8 +34,13 @@ export default function Home({ products }: Props) {
           <A.product className="cursor-pointer rounded-lg p-1 flex items-center justify-center keen-slider__slide">
             <img src={product.imageUrl} alt="t-shirt" />
             <footer className="flex items-center justify-between">
-              <strong className="text-clg">{product.name}</strong>
-              <span className="text-cxl font-bold text-Green-300">{product.price}</span>
+              <div className="flex flex-col items-start justify-start">
+                <strong className="text-clg">{product.name}</strong>
+                <span className="text-cxl font-bold text-Green-300">{product.price}</span>
+              </div>
+              <button className="p-3 bg-Green-500 rounded-md">
+                <Handbag size={32} />
+              </button>
             </footer>
           </A.product>
         </Link>
