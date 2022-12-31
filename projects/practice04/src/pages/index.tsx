@@ -7,6 +7,7 @@ import Stripe from "stripe";
 import { priceFormatter } from "../code/utils/formatter";
 import Link from "next/link";
 import { Handbag } from "phosphor-react";
+import Head from "next/head";
 
 
 interface Props {
@@ -28,24 +29,29 @@ export default function Home({ products }: Props) {
   })
 
   return (
-    <Div.container className="flex text-white w-full ml-auto keen-slider" ref={sliderRef}>
-      {products.map(product => (
-        <Link key={product.id} href={`/produtos/${product.id}`} prefetch={false} legacyBehavior>
-          <A.product className="cursor-pointer rounded-lg p-1 flex items-center justify-center keen-slider__slide">
-            <img src={product.imageUrl} alt="t-shirt" />
-            <footer className="flex items-center justify-between">
-              <div className="flex flex-col items-start justify-start">
-                <strong className="text-clg">{product.name}</strong>
-                <span className="text-cxl font-bold text-Green-300">{product.price}</span>
-              </div>
-              <button className="p-3 bg-Green-500 rounded-md">
-                <Handbag size={32} />
-              </button>
-            </footer>
-          </A.product>
-        </Link>
-      ))}
-    </Div.container>
+    <>
+      <Head>
+        <title>Ignite Shop</title>
+      </Head>
+      <Div.container className="flex text-white w-full ml-auto keen-slider" ref={sliderRef}>
+        {products.map(product => (
+          <Link key={product.id} href={`/produtos/${product.id}`} prefetch={false} legacyBehavior>
+            <A.product className="cursor-pointer rounded-lg p-1 flex items-center justify-center keen-slider__slide">
+              <img src={product.imageUrl} alt="t-shirt" />
+              <footer className="flex items-center justify-between">
+                <div className="flex flex-col items-start justify-start">
+                  <strong className="text-clg">{product.name}</strong>
+                  <span className="text-cxl font-bold text-Green-300">{product.price}</span>
+                </div>
+                <button className="p-3 bg-Green-500 rounded-md font-bold">
+                  <Handbag size={32} />
+                </button>
+              </footer>
+            </A.product>
+          </Link>
+        ))}
+      </Div.container>
+    </>
   )
 }
 
