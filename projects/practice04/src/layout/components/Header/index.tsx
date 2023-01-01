@@ -25,7 +25,7 @@ export function Header() {
             <Handbag size={24} />
           </button>
         ) : (
-          <button className="text-Gray-500 p-3 font-bold cursor-not-allowed" onClick={openCartView}>
+          <button className="text-Gray-500 p-3 font-bold" onClick={openCartView}>
             <Handbag size={24} />
           </button>
         )}
