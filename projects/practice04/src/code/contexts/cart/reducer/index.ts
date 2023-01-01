@@ -1,10 +1,10 @@
-import { CartContextType } from '../types'
+import { CartDataType } from '../types'
 import { CartActions } from './actions'
 import { CartReducerAction } from './types'
 
 export function CartReducer(
-  state: CartContextType,
+  state: CartDataType,
   action: CartReducerAction,
-): CartContextType {
+): CartDataType {
   return { ...state }
 }

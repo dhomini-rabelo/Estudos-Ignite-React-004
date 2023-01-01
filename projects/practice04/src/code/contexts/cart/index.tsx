@@ -8,14 +8,12 @@ export const CartContext = createContext<CartContextType>(
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, cartDispatch] = useReducer(CartReducer, {
-    data: {
-      products: []
-    }
+    products: []
   })
 
 
   return (
-    <CartContext.Provider value={cart}>
+    <CartContext.Provider value={{ data: cart }}>
       {children}
     </CartContext.Provider>
   )
