@@ -17,9 +17,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
     cartDispatch(CartConsumer.add(newProduct))
   }
 
+  function removeProduct(removedProductId: string) {
+    cartDispatch(CartConsumer.remove(removedProductId))
+  }
+
 
   return (
-    <CartContext.Provider value={{ data: cart, actions: { addProduct } }}>
+    <CartContext.Provider value={{ data: cart, actions: { addProduct, removeProduct } }}>
       {children}
     </CartContext.Provider>
   )

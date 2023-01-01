@@ -9,6 +9,8 @@ export function CartReducer(
   switch (action.type) {
     case CartActions.ADD:
       return { products: [...state.products, action.payload.newProduct] }
+    case CartActions.REMOVE:
+      return { products: state.products.filter(product => product.id !== action.payload.removedProductId) }
 
   }
 }

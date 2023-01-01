@@ -9,5 +9,6 @@ export interface CartContextType {
   data: CartDataType
   actions: {
     addProduct: (newProduct: ProductSchemaType) => void
+    removeProduct: (removedProductId: string) => void
   }
 }

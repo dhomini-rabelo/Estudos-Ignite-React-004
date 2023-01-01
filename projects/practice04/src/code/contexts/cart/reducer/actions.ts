@@ -7,6 +7,7 @@ export enum CartEvents {
 
 export enum CartActions {
   ADD = 'ADD',
+  REMOVE = 'REMOVE',
 }
 /* eslint-enable */
 
@@ -18,5 +19,13 @@ export const CartConsumer = {
         newProduct,
       }
     }
-  }
+  },
+  remove(removedProductId: string) {
+    return {
+      type: CartActions.REMOVE,
+      payload: {
+        removedProductId,
+      }
+    }
+  },
 }
