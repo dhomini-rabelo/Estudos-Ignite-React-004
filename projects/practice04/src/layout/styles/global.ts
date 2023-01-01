@@ -33,5 +33,9 @@ export const globalStyles = globalCss({
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
+  },
+
+  '.bg-df-gradient': {
+    background: 'linear-gradient(180deg, #1ea483 0%, #7465d4 100%)',
   }
 })

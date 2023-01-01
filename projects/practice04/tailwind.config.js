@@ -21,7 +21,7 @@ module.exports = {
       },
       fontSize: {
         cmd: '1.125rem',
-        clg: '1.125rem',
+        clg: '1.25rem',
         cxl: '1.5rem',
         'c2xl': '2rem',
       }
