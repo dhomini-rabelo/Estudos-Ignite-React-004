@@ -1,7 +1,10 @@
 import { X } from "phosphor-react";
+import { useContext } from "react";
+import { CartContext } from "../../../code/contexts/cart";
 import { Div } from "./styles";
 
 export function Cart({ handleClose }: { handleClose: () => void }) {
+  const { data: { products } } = useContext(CartContext)
   return (
     <Div.container className="absolute right-0 top-0 bottom-0 max-w-[480px] w-full bg-Gray-800 px-12 pt-6 pb-12 flex flex-col">
       <div className="flex justify-end w-full font-bold">
@@ -11,18 +14,20 @@ export function Cart({ handleClose }: { handleClose: () => void }) {
       <h3 className="lh-160 font-bold text-clg mt-6 pb-8">Sacola de compras</h3>
 
       <main className="t-shirts grow overflow-auto">
-        <div className="t-shirt flex gap-x-5">
-          <div className="bg-df-gradient rounded-lg flex items-center justify-center">
-            <img src="/camisas/camisa01.png" alt="cart-item-image" className="w-24 h-24" />
-          </div>
-          <div className="flex flex-col justify-between">
-            <div>
-              <h4 className="text-cmd lh-160 text-Gray-300">Camiseta Explorer</h4>
-              <strong className="text-cmd lh-160 text-Gray-100">R$ 62,90</strong>
+        {products.map(product => (
+          <div className="t-shirt flex gap-x-5" key={product.id}>
+            <div className="bg-df-gradient rounded-lg flex items-center justify-center">
+              <img src={product.imageUrl} alt="cart-item-image" className="w-24 h-24" />
             </div>
-            <strong className="lh-160 text-Green-500">Remover</strong>
+            <div className="flex flex-col justify-between">
+              <div>
+                <h4 className="text-cmd lh-160 text-Gray-300">{product.name}</h4>
+                <strong className="text-cmd lh-160 text-Gray-100">{product.price}</strong>
+              </div>
+              <strong className="lh-160 text-Green-500">Remover</strong>
+            </div>
           </div>
-        </div>
+        ))}
       </main>
 
       <footer>
@@ -30,7 +35,7 @@ export function Cart({ handleClose }: { handleClose: () => void }) {
         <div className="feedback">
           <div className="flex items-center justify-between lh-160 text-cmd text-Gray-300">
             <span>Quantidade</span>
-            <span>3 itens</span>
+            <span>{products.length === 1 ? `${products.length} item` : `${products.length} itens`}</span>
           </div>
           <div className="flex items-center justify-between lh-160 text-cmd text-Gray-100 font-bold">
             <span>Total</span>

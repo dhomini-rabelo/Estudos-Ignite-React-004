@@ -15,7 +15,7 @@ export function Header() {
 
   useEffect(() => {
     const onAddProduct = query['add-product'] === 'true'
-    if (onAddProduct) {
+    if (onAddProduct && hasProductsInTheCart) {
       openCartView()
     }
   }, [query])
