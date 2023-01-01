@@ -2,8 +2,9 @@ import axios from "axios"
 import { GetStaticPaths, GetStaticProps } from "next"
 import Head from "next/head"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import Stripe from "stripe"
+import { CartContext } from "../../code/contexts/cart"
 import { ProductSchemaType } from "../../code/schemas/products"
 import { stripe } from "../../code/services"
 import { priceFormatter } from "../../code/utils/formatter"
@@ -16,8 +17,9 @@ interface Props {
 
 
 export default function Product({ product }: Props) {
+  const { actions: { addProduct } } = useContext(CartContext)
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false)
-  const { isFallback } = useRouter()
+  const { isFallback, push } = useRouter()
 
   if (isFallback) {
     return <div>Carregando...</div>
@@ -37,6 +39,11 @@ export default function Product({ product }: Props) {
     }
   }
 
+  function handleAddProduct() {
+    addProduct(product)
+    push('/?add-product=true')
+  }
+
   return (
     <>
       <Head>
@@ -50,10 +57,10 @@ export default function Product({ product }: Props) {
           <h1 className="text-c2xl text-Gray-300 font-bold">{product.name}</h1>
           <span className="mt-4 block text-c2xl text-Green-300">{product.price}</span>
           <p className="mt-10 text-cmd lh-160 text-Gray-300">{product.description}</p>
-          <button onClick={handleBuy} disabled={isCreatingCheckoutSession}
+          <button onClick={handleAddProduct}
             className="mt-auto bg-Green-500 border-0 text-White rounded-lg p-5 cursor-pointer font-bold text-cmd hover:bg-Green-300 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-Green-500"
           >
-            Comprar agora
+            Colocar na sacola
           </button>
         </div>
       </main>

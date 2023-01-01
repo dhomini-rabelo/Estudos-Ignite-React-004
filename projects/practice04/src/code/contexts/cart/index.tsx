@@ -14,7 +14,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   })
 
   function addProduct(newProduct: ProductSchemaType) {
-    CartConsumer.add(newProduct)
+    cartDispatch(CartConsumer.add(newProduct))
   }
 
 
