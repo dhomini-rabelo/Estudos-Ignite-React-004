@@ -9,7 +9,7 @@ import Link from "next/link";
 import { Handbag } from "phosphor-react";
 import Head from "next/head";
 import { ProductSchemaType } from "../code/schemas/products";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { CartContext } from "../code/contexts/cart";
 
 
@@ -21,12 +21,21 @@ interface Props {
 export default function Home({ productsForSale }: Props) {
   const { data: { products: productsInCart } } = useContext(CartContext)
   const productsAvailable = productsForSale.filter(productForSale => !productsInCart.find(productInCart => productInCart.id === productForSale.id))
-  const [sliderRef] = useKeenSlider({
+  const [sliderRef, slider] = useKeenSlider({
     slides: {
       perView: 3,
       spacing: 48,
-    }
+    },
   })
+
+  useEffect(() => {
+    slider.current?.update({
+      slides: {
+        perView: 3,
+        spacing: 48,
+      }
+    });
+  }, [productsAvailable])
 
   return (
     <>

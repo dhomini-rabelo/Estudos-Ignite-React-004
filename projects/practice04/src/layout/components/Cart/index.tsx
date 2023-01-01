@@ -5,7 +5,12 @@ import { priceFormatter } from "../../../code/utils/formatter";
 import { Div } from "./styles";
 
 export function Cart({ handleClose }: { handleClose: () => void }) {
-  const { data: { products } } = useContext(CartContext)
+  const { data: { products }, actions: { removeProduct } } = useContext(CartContext)
+
+  function handleRemoveProductFromTheCart(removedProductId: string) {
+    removeProduct(removedProductId)
+  }
+
   return (
     <Div.container className="absolute right-0 top-0 bottom-0 max-w-[480px] w-full bg-Gray-800 px-12 pt-6 pb-12 flex flex-col">
       <div className="flex justify-end w-full font-bold">
@@ -25,7 +30,7 @@ export function Cart({ handleClose }: { handleClose: () => void }) {
                 <h4 className="text-cmd lh-160 text-Gray-300">{product.name}</h4>
                 <strong className="text-cmd lh-160 text-Gray-100">{priceFormatter.format(product.price)}</strong>
               </div>
-              <strong className="lh-160 text-Green-500">Remover</strong>
+              <strong className="lh-160 text-Green-500 cursor-pointer" onClick={() => handleRemoveProductFromTheCart(product.id)}>Remover</strong>
             </div>
           </div>
         ))}
