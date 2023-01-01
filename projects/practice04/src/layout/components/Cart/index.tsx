@@ -1,10 +1,10 @@
 import { X } from "phosphor-react";
 
-export function Cart() {
+export function Cart({ handleClose }: { handleClose: () => void }) {
   return (
     <div className="absolute right-0 top-0 bottom-0 max-w-[480px] w-full bg-Gray-800 px-12 pt-6 pb-12 flex flex-col">
       <div className="flex justify-end w-full font-bold">
-        <X size={24} className="text-Gray-500" />
+        <X onClick={handleClose} size={24} className="text-Gray-500 cursor-pointer" />
       </div>
 
       <h3 className="lh-160 font-bold text-clg mt-6 pb-8">Sacola de compras</h3>
