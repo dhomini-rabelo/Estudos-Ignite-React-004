@@ -8,15 +8,11 @@ import { priceFormatter } from "../code/utils/formatter";
 import Link from "next/link";
 import { Handbag } from "phosphor-react";
 import Head from "next/head";
+import { ProductSchemaType } from "../code/schemas/products";
 
 
 interface Props {
-  products: {
-    id: string,
-    name: string,
-    imageUrl: string,
-    price: string,
-  }[]
+  products: ProductSchemaType[]
 }
 
 
@@ -68,6 +64,8 @@ export const getStaticProps: GetStaticProps = async () => {
       name: product.name,
       imageUrl: product.images[0],
       price: priceFormatter.format(priceSettings.unit_amount! / 100),
+      description: product.description,
+      priceId: priceSettings.id,
     }
   })
 

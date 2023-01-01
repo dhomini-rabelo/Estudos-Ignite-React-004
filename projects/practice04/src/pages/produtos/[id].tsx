@@ -4,19 +4,13 @@ import Head from "next/head"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import Stripe from "stripe"
+import { ProductSchemaType } from "../../code/schemas/products"
 import { stripe } from "../../code/services"
 import { priceFormatter } from "../../code/utils/formatter"
 import { Div } from "../../layout/styles/pages/products/id"
 
 interface Props {
-  product: {
-    id: string,
-    name: string,
-    imageUrl: string,
-    price: string,
-    description: string,
-    priceId: string,
-  }
+  product: ProductSchemaType
 }
 
 
