@@ -37,7 +37,7 @@ export default function Home({ products }: Props) {
               <footer className="flex items-center justify-between">
                 <div className="flex flex-col items-start justify-start">
                   <strong className="text-clg">{product.name}</strong>
-                  <span className="text-cxl font-bold text-Green-300">{product.price}</span>
+                  <span className="text-cxl font-bold text-Green-300">{priceFormatter.format(product.price)}</span>
                 </div>
                 <button className="p-3 bg-Green-500 rounded-md font-bold">
                   <Handbag size={32} />
@@ -63,7 +63,7 @@ export const getStaticProps: GetStaticProps = async () => {
       id: product.id,
       name: product.name,
       imageUrl: product.images[0],
-      price: priceFormatter.format(priceSettings.unit_amount! / 100),
+      price: (priceSettings.unit_amount! / 100),
       description: product.description,
       priceId: priceSettings.id,
     }

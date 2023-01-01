@@ -55,7 +55,7 @@ export default function Product({ product }: Props) {
         </Div.imageContainer>
         <div className="col-span-1 flex flex-col">
           <h1 className="text-c2xl text-Gray-300 font-bold">{product.name}</h1>
-          <span className="mt-4 block text-c2xl text-Green-300">{product.price}</span>
+          <span className="mt-4 block text-c2xl text-Green-300">{priceFormatter.format(product.price)}</span>
           <p className="mt-10 text-cmd lh-160 text-Gray-300">{product.description}</p>
           <button onClick={handleAddProduct}
             className="mt-auto bg-Green-500 border-0 text-White rounded-lg p-5 cursor-pointer font-bold text-cmd hover:bg-Green-300 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-Green-500"
@@ -87,7 +87,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         id: product.id,
         name: product.name,
         imageUrl: product.images[0],
-        price: priceFormatter.format(priceSettings.unit_amount! / 100),
+        price: (priceSettings.unit_amount! / 100),
         description: product.description,
         priceId: priceSettings.id,
       }

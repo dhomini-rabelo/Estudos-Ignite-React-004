@@ -1,6 +1,7 @@
 import { X } from "phosphor-react";
 import { useContext } from "react";
 import { CartContext } from "../../../code/contexts/cart";
+import { priceFormatter } from "../../../code/utils/formatter";
 import { Div } from "./styles";
 
 export function Cart({ handleClose }: { handleClose: () => void }) {
@@ -11,18 +12,18 @@ export function Cart({ handleClose }: { handleClose: () => void }) {
         <X onClick={handleClose} size={24} className="text-Gray-500 cursor-pointer" />
       </div>
 
-      <h3 className="lh-160 font-bold text-clg mt-6 pb-8">Sacola de compras</h3>
+      <h3 className="lh-160 font-bold text-clg mt-6 mb-2">Sacola de compras</h3>
 
       <main className="t-shirts grow overflow-auto">
         {products.map(product => (
-          <div className="t-shirt flex gap-x-5" key={product.id}>
+          <div className="t-shirt flex gap-x-5 mt-6" key={product.id}>
             <div className="bg-df-gradient rounded-lg flex items-center justify-center">
               <img src={product.imageUrl} alt="cart-item-image" className="w-24 h-24" />
             </div>
             <div className="flex flex-col justify-between">
               <div>
                 <h4 className="text-cmd lh-160 text-Gray-300">{product.name}</h4>
-                <strong className="text-cmd lh-160 text-Gray-100">{product.price}</strong>
+                <strong className="text-cmd lh-160 text-Gray-100">{priceFormatter.format(product.price)}</strong>
               </div>
               <strong className="lh-160 text-Green-500">Remover</strong>
             </div>
@@ -39,7 +40,7 @@ export function Cart({ handleClose }: { handleClose: () => void }) {
           </div>
           <div className="flex items-center justify-between lh-160 text-cmd text-Gray-100 font-bold">
             <span>Total</span>
-            <span>R$ 270,00</span>
+            <span>{priceFormatter.format(products.reduce((acc, product) => (product.price + acc), 0))}</span>
           </div>
         </div>
 
