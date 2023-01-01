@@ -9,14 +9,17 @@ import Link from "next/link";
 import { Handbag } from "phosphor-react";
 import Head from "next/head";
 import { ProductSchemaType } from "../code/schemas/products";
+import { useContext } from "react";
+import { CartContext } from "../code/contexts/cart";
 
 
 interface Props {
-  products: ProductSchemaType[]
+  productsForSale: ProductSchemaType[]
 }
 
 
-export default function Home({ products }: Props) {
+export default function Home({ productsForSale }: Props) {
+  const { data: { products: productsInCart } } = useContext(CartContext)
   const [sliderRef] = useKeenSlider({
     slides: {
       perView: 3,
@@ -30,7 +33,7 @@ export default function Home({ products }: Props) {
         <title>Ignite Shop</title>
       </Head>
       <Div.container className="flex text-white w-full ml-auto keen-slider" ref={sliderRef}>
-        {products.map(product => (
+        {productsForSale.filter(productForSale => ((productsInCart.find(productInCart => productInCart.id === productForSale.id)) === undefined)).map(product => (
           <Link key={product.id} href={`/produtos/${product.id}`} prefetch={false} legacyBehavior>
             <A.product className="cursor-pointer rounded-lg p-1 flex items-center justify-center keen-slider__slide">
               <img src={product.imageUrl} alt="t-shirt" />
@@ -57,7 +60,7 @@ export const getStaticProps: GetStaticProps = async () => {
     expand: ['data.default_price'],
   })
 
-  const products = request.data.map(product => {
+  const productsForSale = request.data.map(product => {
     const priceSettings = product.default_price as Stripe.Price
     return {
       id: product.id,
@@ -71,7 +74,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      products
+      productsForSale
     },
     revalidate: 60 * 60 * 2, // 2 hours
   }

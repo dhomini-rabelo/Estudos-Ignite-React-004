@@ -9,7 +9,7 @@ export function Cart({ handleClose }: { handleClose: () => void }) {
   return (
     <Div.container className="absolute right-0 top-0 bottom-0 max-w-[480px] w-full bg-Gray-800 px-12 pt-6 pb-12 flex flex-col">
       <div className="flex justify-end w-full font-bold">
-        <X onClick={handleClose} size={24} className="text-Gray-500 cursor-pointer" />
+        <X onClick={handleClose} size={24} className="text-Gray-500 cursor-pointer hover:text-Gray-300" />
       </div>
 
       <h3 className="lh-160 font-bold text-clg mt-6 mb-2">Sacola de compras</h3>
@@ -44,7 +44,7 @@ export function Cart({ handleClose }: { handleClose: () => void }) {
           </div>
         </div>
 
-        <button className="mt-14 w-full block bg-Green-500 font-bold text-Gray-100 py-5 rounded-lg">
+        <button className="mt-14 w-full block hover:bg-Green-300 bg-Green-500 font-bold text-Gray-100 py-5 rounded-lg">
           Finalizar compra
         </button>
 
