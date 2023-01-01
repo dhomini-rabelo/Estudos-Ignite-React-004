@@ -1,15 +1,24 @@
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { Handbag } from "phosphor-react"
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { CartContext } from "../../../code/contexts/cart"
 import { Cart } from "../Cart"
 
 export function Header() {
+  const { query } = useRouter()
   const { data: { products } } = useContext(CartContext)
-  const hasProductsInTheCart = products.length > 0
   const [cartViewIsOpened, setCartViewIsOpened] = useState(false)
+  const hasProductsInTheCart = products.length > 0
   const openCartView = () => setCartViewIsOpened(true)
   const closeCartView = () => setCartViewIsOpened(false)
+
+  useEffect(() => {
+    const onAddProduct = query['add-product'] === 'true'
+    if (onAddProduct) {
+      openCartView()
+    }
+  }, [query])
 
   return (
     <>
