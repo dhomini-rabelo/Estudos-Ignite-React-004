@@ -8,7 +8,7 @@ export function Header() {
   const { data: { products } } = useContext(CartContext)
   const hasProductsInTheCart = products.length > 0
   const [cartViewIsOpened, setCartViewIsOpened] = useState(false)
-  const openCartView = () => hasProductsInTheCart && setCartViewIsOpened(true)
+  const openCartView = () => setCartViewIsOpened(true)
   const closeCartView = () => setCartViewIsOpened(false)
 
   return (
@@ -20,12 +20,12 @@ export function Header() {
         {hasProductsInTheCart ? (
           <button className="text-Gray-100 p-3 font-bold relative" onClick={openCartView}>
             <div className="w-6 h-6 bg-Green-500 absolute text-center rounded-full -top-2 -right-2">
-              <strong className="text-sm text-White lh-160">1</strong>
+              <strong className="text-sm text-White lh-160">{products.length}</strong>
             </div>
             <Handbag size={24} />
           </button>
         ) : (
-          <button className="text-Gray-500 p-3 font-bold cursor-not-allowed">
+          <button className="text-Gray-500 p-3 font-bold cursor-not-allowed" onClick={openCartView}>
             <Handbag size={24} />
           </button>
         )}
