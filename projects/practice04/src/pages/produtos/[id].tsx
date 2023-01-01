@@ -5,6 +5,7 @@ import { useRouter } from "next/router"
 import { useContext, useState } from "react"
 import Stripe from "stripe"
 import { CartContext } from "../../code/contexts/cart"
+import { CartEvents } from "../../code/contexts/cart/reducer/actions"
 import { ProductSchemaType } from "../../code/schemas/products"
 import { stripe } from "../../code/services"
 import { priceFormatter } from "../../code/utils/formatter"
@@ -41,7 +42,7 @@ export default function Product({ product }: Props) {
 
   function handleAddProduct() {
     addProduct(product)
-    push('/?add-product=true')
+    push(`/?${CartEvents.ADD}=true`)
   }
 
   return (

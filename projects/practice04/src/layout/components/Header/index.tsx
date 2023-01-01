@@ -3,6 +3,7 @@ import { useRouter } from "next/router"
 import { Handbag } from "phosphor-react"
 import { useContext, useEffect, useState } from "react"
 import { CartContext } from "../../../code/contexts/cart"
+import { CartEvents } from "../../../code/contexts/cart/reducer/actions"
 import { Cart } from "../Cart"
 
 export function Header() {
@@ -14,7 +15,7 @@ export function Header() {
   const closeCartView = () => setCartViewIsOpened(false)
 
   useEffect(() => {
-    const onAddProduct = query['add-product'] === 'true'
+    const onAddProduct = query[CartEvents.ADD] === 'true'
     if (onAddProduct && hasProductsInTheCart) {
       openCartView()
     }
