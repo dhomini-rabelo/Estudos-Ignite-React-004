@@ -6,5 +6,9 @@ export function CartReducer(
   state: CartDataType,
   action: CartReducerAction,
 ): CartDataType {
-  return { ...state }
+  switch (action.type) {
+    case CartActions.ADD:
+      return { products: [...state.products, action.payload.newProduct] }
+
+  }
 }

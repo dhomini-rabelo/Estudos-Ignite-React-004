@@ -7,4 +7,7 @@ export interface CartDataType {
 
 export interface CartContextType {
   data: CartDataType
+  actions: {
+    addProduct: (newProduct: ProductSchemaType) => void
+  }
 }
