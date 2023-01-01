@@ -20,6 +20,7 @@ interface Props {
 
 export default function Home({ productsForSale }: Props) {
   const { data: { products: productsInCart } } = useContext(CartContext)
+  const productsAvailable = productsForSale.filter(productForSale => !productsInCart.find(productInCart => productInCart.id === productForSale.id))
   const [sliderRef] = useKeenSlider({
     slides: {
       perView: 3,
@@ -33,7 +34,7 @@ export default function Home({ productsForSale }: Props) {
         <title>Ignite Shop</title>
       </Head>
       <Div.container className="flex text-white w-full ml-auto keen-slider" ref={sliderRef}>
-        {productsForSale.filter(productForSale => ((productsInCart.find(productInCart => productInCart.id === productForSale.id)) === undefined)).map(product => (
+        {productsAvailable.map(product => (
           <Link key={product.id} href={`/produtos/${product.id}`} prefetch={false} legacyBehavior>
             <A.product className="cursor-pointer rounded-lg p-1 flex items-center justify-center keen-slider__slide">
               <img src={product.imageUrl} alt="t-shirt" />
@@ -42,7 +43,7 @@ export default function Home({ productsForSale }: Props) {
                   <strong className="text-clg">{product.name}</strong>
                   <span className="text-cxl font-bold text-Green-300">{priceFormatter.format(product.price)}</span>
                 </div>
-                <button className="p-3 bg-Green-500 rounded-md font-bold">
+                <button className="p-3 bg-Green-500 rounded-md font-bold hover:bg-Green-300">
                   <Handbag size={32} />
                 </button>
               </footer>
