@@ -16,8 +16,10 @@ export function Header() {
 
   useEffect(() => {
     const onAddProduct = query[CartEvents.ADD] === 'true'
-    if (onAddProduct && hasProductsInTheCart) {
+    if (onAddProduct && hasProductsInTheCart && window.location.pathname === '/') {
       openCartView()
+    } else if (cartViewIsOpened) {
+      closeCartView()
     }
   }, [query])
 
