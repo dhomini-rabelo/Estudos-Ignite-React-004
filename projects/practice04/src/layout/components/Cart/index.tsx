@@ -1,14 +1,29 @@
+import axios from "axios";
 import { X } from "phosphor-react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CartContext } from "../../../code/contexts/cart";
 import { priceFormatter } from "../../../code/utils/formatter";
 import { Div } from "./styles";
 
 export function Cart({ handleClose }: { handleClose: () => void }) {
   const { data: { products }, actions: { removeProduct } } = useContext(CartContext)
+  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false)
 
   function handleRemoveProductFromTheCart(removedProductId: string) {
     removeProduct(removedProductId)
+  }
+  async function handleBuy() {
+    try {
+      setIsCreatingCheckoutSession(true)
+      const response = await axios.post('/api/checkout', {
+        products: products,
+        cancelUrl: window.location.href,
+      })
+      window.location.href = response.data.checkoutUrl
+    } catch {
+      setIsCreatingCheckoutSession(false)
+      alert('Falha ao redirecionar para o checkout!')
+    }
   }
 
   return (
@@ -30,7 +45,7 @@ export function Cart({ handleClose }: { handleClose: () => void }) {
                 <h4 className="text-cmd lh-160 text-Gray-300">{product.name}</h4>
                 <strong className="text-cmd lh-160 text-Gray-100">{priceFormatter.format(product.price)}</strong>
               </div>
-              <strong className="lh-160 text-Green-500 cursor-pointer" onClick={() => handleRemoveProductFromTheCart(product.id)}>Remover</strong>
+              <strong className="lh-160 text-Green-500 hover:text-Green-300 cursor-pointer" onClick={() => handleRemoveProductFromTheCart(product.id)}>Remover</strong>
             </div>
           </div>
         ))}
@@ -49,7 +64,11 @@ export function Cart({ handleClose }: { handleClose: () => void }) {
           </div>
         </div>
 
-        <button className="mt-14 w-full block hover:bg-Green-300 bg-Green-500 font-bold text-Gray-100 py-5 rounded-lg">
+        <button
+          onClick={handleBuy}
+          disabled={isCreatingCheckoutSession}
+          className="mt-14 w-full block hover:bg-Green-300 bg-Green-500 font-bold text-Gray-100 py-5 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-Green-500"
+        >
           Finalizar compra
         </button>
 
