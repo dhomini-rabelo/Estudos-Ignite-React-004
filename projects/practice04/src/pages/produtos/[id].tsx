@@ -1,8 +1,7 @@
-import axios from "axios"
 import { GetStaticPaths, GetStaticProps } from "next"
 import Head from "next/head"
 import { useRouter } from "next/router"
-import { useContext, useState } from "react"
+import { useContext } from "react"
 import Stripe from "stripe"
 import { CartContext } from "../../code/contexts/cart"
 import { CartEvents } from "../../code/contexts/cart/reducer/actions"
@@ -19,25 +18,10 @@ interface Props {
 
 export default function Product({ product }: Props) {
   const { actions: { addProduct } } = useContext(CartContext)
-  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false)
   const { isFallback, push } = useRouter()
 
   if (isFallback) {
     return <div>Carregando...</div>
-  }
-
-  async function handleBuy() {
-    try {
-      setIsCreatingCheckoutSession(true)
-      const response = await axios.post('/api/checkout', {
-        productId: product.id,
-        priceId: product.priceId,
-      })
-      window.location.href = response.data.checkoutUrl
-    } catch {
-      setIsCreatingCheckoutSession(false)
-      alert('Falha ao redirecionar para o checkout!')
-    }
   }
 
   function handleAddProduct() {
@@ -48,7 +32,7 @@ export default function Product({ product }: Props) {
   return (
     <>
       <Head>
-        <title>{product.name} | Ignite Shop</title>
+        <title>{`${product.name} | Ignite Shop`}</title>
       </Head>
       <main className="grid grid-cols-2 items-stretch gap-16 max-w-[1180px] mx-auto">
         <Div.imageContainer className="col-span-1 w-full max-w-[576px] rounded-lg p-1 flex items-center justify-center">
