@@ -8,14 +8,15 @@ import { Div } from "../layout/styles/pages/sucesso";
 
 interface Props {
   customer: string | null
-  product: {
+  products: {
+    id: string
     name: string
     imageUrl: string
-  } | null
+  }[] | null
 }
 
 
-export default function SuccessfulPayment({ customer, product }: Props) {
+export default function SuccessfulPayment({ customer, products }: Props) {
   return (
     <>
       <Head>
@@ -24,12 +25,16 @@ export default function SuccessfulPayment({ customer, product }: Props) {
       </Head>
       <main className="flex flex-col items-center justify-center mx-auto h-[656px]">
         <h1 className="text-c2xl text-Gray-100 font-bold">Compra efetuada!</h1>
-        <Div.imageContainer className="w-full max-w-[130px] h-[145px] rounded-lg p-1 flex items-center justify-center mt-16">
-          <img src={product ? product.imageUrl : '/camisas/camisa01.png'} alt="product-image" />
-        </Div.imageContainer>
+        <div className="flex item-center justify-center -ml-[52px]">
+          {products?.map(product => (
+            <Div.imageContainer className="w-full max-w-[140px] h-[145px] flex items-center justify-center mt-16 rounded-full -mr-[52px]" key={product.id}>
+              <img src={product ? product.imageUrl : '/camisas/camisa01.png'} alt="product-image" />
+            </Div.imageContainer>
+          ))}
+        </div>
         <p className="text-cxl text-Gray-300 max-w-[560px] text-center mt-8 lh-130">
-          {(product && customer) ? (
-            <>Uhuul <strong>{customer}</strong>, sua <strong>{product.name}</strong> já está a caminho da sua casa.</>
+          {(products && customer) ? (
+            <>Uhuul <strong>{customer}</strong>, sua compra de <strong>{products.length}</strong> camisetas já está a caminho da sua casa. </>
           ) : (
             <>Uhuul, sua compra já está a caminho da sua casa.</>
           )}
@@ -50,14 +55,18 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       expand: ['line_items', 'line_items.data.price.product']
     })
     const customer = session.customer_details!.name
-    const product = session.line_items!.data[0].price!.product as Stripe.Product
+    const products = session.line_items!.data!.map((cartItem) => {
+      const product = cartItem.price?.product as Stripe.Product
+      return {
+        id: product.id,
+        name: product.name,
+        imageUrl: product.images[0],
+      }
+    })
     return {
       props: {
         customer,
-        product: {
-          name: product.name,
-          imageUrl: product.images[0],
-        },
+        products,
       },
     }
   } else {
